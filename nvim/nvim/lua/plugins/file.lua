@@ -10,41 +10,10 @@ return {
     },
   },
   {
-    {
-      "williamboman/mason.nvim",
-      opts = {
-        ensure_installed = {
-          "actionlint",
-          "gh",
-          "cbfmt",
-          "css-lsp",
-          "cuelsp",
-          "ansible-language-server",
-          "ansible-lint",
-          "bash-language-server",
-          "bash-debug-adapter",
-          "golangci-lint",
-          "html-lsp",
-          "json-lsp",
-          "jq",
-          "jq-lsp",
-          "nginx-language-server",
-          "markuplint",
-          "templ",
-          "stylua",
-          "shellcheck",
-          "shfmt",
-          "flake8",
-          "terraform-ls",
-          "tflint",
-          "tfsec",
-          "yaml-language-server",
-          "yamllint",
-          "yamlfmt",
-          "yq",
-        },
-      },
-    },
+    "stevearc/oil.nvim",
+    opts = {},
+    -- Optional dependencies
+    dependencies = { "nvim-tree/nvim-web-devicons" },
   },
   {
     "zbirenbaum/copilot.lua",
@@ -136,6 +105,9 @@ return {
   -- Get thick virtual text lines
   {
     "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+  },
+  {
+    "mfussenegger/nvim-ansible",
   },
   {
     {
