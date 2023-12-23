@@ -10,6 +10,12 @@ return {
     },
   },
   {
+    "stevearc/oil.nvim",
+    opts = {},
+    -- Optional dependencies
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+  },
+  {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     build = ":Copilot auth",
@@ -96,9 +102,8 @@ return {
       return opts
     end,
   },
-  -- Get thick virtual text lines
   {
-    "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+    "mfussenegger/nvim-ansible",
   },
   {
     {
