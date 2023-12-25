@@ -10,12 +10,6 @@ return {
     },
   },
   {
-    "stevearc/oil.nvim",
-    opts = {},
-    -- Optional dependencies
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-  },
-  {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     build = ":Copilot auth",
@@ -186,6 +180,11 @@ return {
       defaults = {
         ["<leader>h"] = { name = "+harpoon" },
         ["<leader>z"] = { name = "+zellij" },
+        ["<leader>cg"] = { name = "+go" },
+        ["<leader>ct"] = { name = "+terraform" },
+        ["<leader>ca"] = { name = "+ansible" },
+        ["<leader>cam"] = { name = "+ansible molecule" },
+        ["<leader>caml"] = { name = "+ansible local" },
       },
     },
   },
