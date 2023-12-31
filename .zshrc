@@ -42,3 +42,4 @@ source /home/linuxbrew/.linuxbrew/share/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 eval "$(zoxide init zsh)"
 eval "$(atuin init zsh)"
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
