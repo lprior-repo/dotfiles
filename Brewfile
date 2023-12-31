@@ -1,5 +1,4 @@
 tap "homebrew/bundle"
-tap "upbound/tap"
 tap "wez/wezterm-linuxbrew"
 brew "act"
 brew "ansible"
