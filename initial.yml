@@ -29,7 +29,7 @@
 
     - name: Install oh my zsh
       ansible.builtin.command:
-        cmd: "sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+        cmd: 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
 
     - name: Move folders to .config
       ansible.builtin.copy:
@@ -43,5 +43,5 @@
 
     - name: Move .zshrc to home
       ansible.builtin.copy:
-        src: "{{ dotfiles_path }}/.zshrc
+        src: "{{ dotfiles_path }}/.zshrc"
         dest: "~/.zshrc"
