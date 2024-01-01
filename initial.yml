@@ -24,11 +24,11 @@
         update: yes
 
     - name: Install packages using Brewfile
-      ansible.builtin.command:
+      ansible.builtin.shell:
         cmd: "brew bundle --file={{ brewfile_path }}"
 
     - name: Install oh my zsh
-      ansible.builtin.command:
+      ansible.builtin.shell:
         cmd: 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
 
     - name: Move folders to .config
