@@ -45,3 +45,7 @@
       ansible.builtin.copy:
         src: "{{ dotfiles_path }}/.zshrc"
         dest: "~/.zshrc"
+
+    - name: source zshrv
+      ansible.builtin.shell:
+        cmd: "source ~/.zshrc"
