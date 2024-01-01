@@ -3,6 +3,7 @@
   hosts: localhost
   vars:
     brewfile_path: ~/src/dotfiles/Brewfile
+    dotfiles_path: ~/src/dotfiles
 
   tasks:
     - name: Ensure src exists
@@ -18,7 +19,7 @@
     - name: Get Git repo
       ansible.builtin.git:
         repo: "git@github.com:lprior-repo/dotfiles.git"
-        dest: "~/src/dotfiles"
+        dest: "{{ dotfiles_path }}"
         clone: yes
         update: yes
 
@@ -26,12 +27,21 @@
       ansible.builtin.command:
         cmd: "brew bundle --file={{ brewfile_path }}"
 
+    - name: Install oh my zsh
+      ansible.builtin.command:
+        cmd: "sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
     - name: Move folders to .config
       ansible.builtin.copy:
-        src: "~/src/dotfiles/{{ item }}/"
+        src: "{{ dotfiles_path }}/{{ item }}/"
         dest: "~/.config/{{ item }}/"
         remote_src: yes
         local_follow: yes
       loop:
         - zellij
         - nvim
+
+    - name: Move .zshrc to home
+      ansible.builtin.copy:
+        src: "{{ dotfiles_path }}/.zshrc
+        dest: "~/.zshrc"
