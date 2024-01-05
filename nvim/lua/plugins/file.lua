@@ -102,8 +102,14 @@ return {
     },
   },
   {
-    "folke/tokyonight.nvim",
-    lazy = true,
-    opts = { style = "night" },
+    "zootedb0t/citruszest.nvim",
+    lazy = false,
+    priority = 1000,
+  },
+  {
+    "LazyVim/LazyVim",
+    opts = {
+      colorscheme = "citruszest",
+    },
   },
 }
