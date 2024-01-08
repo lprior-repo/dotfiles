@@ -25,11 +25,7 @@
 
     - name: Install packages using Brewfile
       ansible.builtin.shell:
-        cmd: "brew bundle --file={{ brewfile_path }}"
-
-    - name: Install oh my zsh
-      ansible.builtin.shell:
-        cmd: 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
+        cmd: "brew bundle --file={{ brewfile_path }}"d
 
     - name: Move folders to .config
       ansible.builtin.copy:
@@ -40,12 +36,3 @@
       loop:
         - zellij
         - nvim
-
-    - name: Move .zshrc to home
-      ansible.builtin.copy:
-        src: "{{ dotfiles_path }}/.zshrc"
-        dest: "~/.zshrc"
-
-    - name: source zshrv
-      ansible.builtin.shell:
-        cmd: "source ~/.zshrc"
