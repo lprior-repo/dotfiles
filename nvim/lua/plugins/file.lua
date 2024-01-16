@@ -12,6 +12,9 @@ return {
   {
     "mfussenegger/nvim-ansible",
   },
+   {
+  'joerdav/templ.vim'
+  },  
   {
     {
       "theprimeagen/harpoon",
