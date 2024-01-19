@@ -188,6 +188,7 @@ return {
         ["<leader>ca"] = { name = "+ansible" },
         ["<leader>cam"] = { name = "+ansible molecule" },
         ["<leader>caml"] = { name = "+ansible local" },
+        ["<leader>cp"] = { name = "+copilot" },
       },
     },
   },
