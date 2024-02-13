@@ -1,6 +1,6 @@
 # Nushell Environment Config File
 #
-# version = "0.89.0"
+# version = "0.90.1"
 
 def create_left_prompt [] {
     let home =  $nu.home-path
@@ -102,3 +102,4 @@ $env.NU_PLUGIN_DIRS = [
 $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
 mkdir ~/.cache/carapace
 carapace _carapace nushell | save --force ~/.cache/carapace/init.nu
+
