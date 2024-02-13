@@ -1,12 +1,12 @@
 # Nushell Config File
 #
-# version = "0.89.0"
+# version = "0.90.1"
 
 # For more information on defining custom themes, see
 # https://www.nushell.sh/book/coloring_and_theming.html
 # And here is the theme collection
 # https://github.com/nushell/nu_scripts/tree/main/themes
-
+source ~/.cache/carapace/init.nu
 let dark_theme = {
     # color for nushell primitives
     separator: white
@@ -139,7 +139,7 @@ let light_theme = {
 
 # External completer example
 let carapace_completer = {|spans|
-  carapace $spans.0 nushell ...$spans | from json
+     carapace $spans.0 nushell ...$spans | from json
 }
 
 # The default config record. This is where much of your global configuration is setup.
@@ -207,7 +207,7 @@ $env.config = {
         case_sensitive: false # set to true to enable case-sensitive completions
         quick: true    # set this to false to prevent auto-selecting completions when only one remains
         partial: true    # set this to false to prevent partial filling of the prompt
-        algorithm: "prefix"    # prefix or fuzzy
+        algorithm: "fuzzy"    # prefix or fuzzy
         external: {
             enable: true # set to false to prevent nushell looking into $env.PATH to find more suggestions, `false` recommended for WSL users as this look up may be very slow
             max_results: 100 # setting it lower can improve completion performance at the cost of omitting some options
@@ -230,14 +230,16 @@ $env.config = {
     use_grid_icons: true
     footer_mode: "25" # always, never, number_of_rows, auto
     float_precision: 2 # the precision for displaying floats in tables
-    buffer_editor: "" # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
+    buffer_editor: "nvim" # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
     use_ansi_coloring: true
     bracketed_paste: true # enable bracketed paste, currently useless on windows
     edit_mode: vi # emacs, vi
-    shell_integration: false # enables terminal shell integration. Off by default, as some terminals have issues with this.
+    shell_integration: true # enables terminal shell integration. Off by default, as some terminals have issues with this.
     render_right_prompt_on_last_line: false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
     use_kitty_protocol: false # enables keyboard enhancement protocol implemented by kitty console, only if your terminal support this.
     highlight_resolved_externals: true # true enables highlighting of external commands in the repl resolved by which.
+
+    plugins: {} # Per-plugin configuration. See https://www.nushell.sh/contributor-book/plugins.html#configuration.
 
     hooks: {
         pre_prompt: [{ null }] # run before the prompt is shown
@@ -264,8 +266,43 @@ $env.config = {
             }
             style: {
                 text: green
-                selected_text: green_reverse
+                selected_text: {attr: r}
                 description_text: yellow
+                match_text: {attr: u}
+                selected_match_text: {attr: ur}
+            }
+        }
+        {
+            name: ide_completion_menu
+            only_buffer_difference: false
+            marker: "| "
+            type: {
+                layout: ide
+                min_completion_width: 0,
+                max_completion_width: 50,
+                # max_completion_height: 10, # will be limited by the available lines in the terminal
+                padding: 0,
+                border: true,
+                cursor_offset: 0,
+                description_mode: "prefer_right"
+                min_description_width: 0
+                max_description_width: 50
+                max_description_height: 10
+                description_offset: 1
+                # If true, the cursor pos will be corrected, so the suggestions match up with the typed text
+                #
+                # C:\> str
+                #      str join
+                #      str trim
+                #      str split
+                correct_cursor_pos: false
+            }
+            style: {
+                text: green
+                selected_text: {attr: r}
+                description_text: yellow
+                match_text: {attr: u}
+                selected_match_text: {attr: ur}
             }
         }
         {
@@ -311,6 +348,19 @@ $env.config = {
             event: {
                 until: [
                     { send: menu name: completion_menu }
+                    { send: menunext }
+                    { edit: complete }
+                ]
+            }
+        }
+        {
+            name: ide_completion_menu
+            modifier: control
+            keycode: char_n
+            mode: [emacs vi_normal vi_insert]
+            event: {
+                until: [
+                    { send: menu name: ide_completion_menu }
                     { send: menunext }
                     { edit: complete }
                 ]
@@ -758,6 +808,34 @@ $env.config = {
             keycode: char_c
             mode: emacs
             event: {edit: capitalizechar}
+        }
+        {
+            name: copy_selection
+            modifier: control_shift
+            keycode: char_c
+            mode: emacs
+            event: { edit: copyselection }
+        }
+        {
+            name: cut_selection
+            modifier: control_shift
+            keycode: char_x
+            mode: emacs
+            event: { edit: cutselection }
+        }
+        {
+            name: select_all
+            modifier: control_shift
+            keycode: char_a
+            mode: emacs
+            event: { edit: selectall }
+        }
+        {
+            name: paste
+            modifier: control_shift
+            keycode: char_v
+            mode: emacs
+            event: { edit: pastecutbufferbefore }
         }
     ]
 }
