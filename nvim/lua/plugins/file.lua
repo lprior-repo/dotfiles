@@ -9,7 +9,7 @@ return {
       end,
     },
   },
-   {
+  {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     build = ":Copilot auth",
@@ -93,15 +93,16 @@ return {
           copilot.dismiss()
         end
       end)
+
       return opts
     end,
   },
   {
     "mfussenegger/nvim-ansible",
   },
-   {
-  'joerdav/templ.vim'
-  },  
+  {
+    "joerdav/templ.vim",
+  },
   {
     {
       "theprimeagen/harpoon",
