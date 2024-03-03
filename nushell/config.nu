@@ -6,7 +6,6 @@
 # https://www.nushell.sh/book/coloring_and_theming.html
 # And here is the theme collection
 # https://github.com/nushell/nu_scripts/tree/main/themes
-source ~/.cache/carapace/init.nu
 let dark_theme = {
     # color for nushell primitives
     separator: white
@@ -138,8 +137,40 @@ let light_theme = {
 }
 
 # External completer example
-let carapace_completer = {|spans|
-     carapace $spans.0 nushell ...$spans | from json
+#let carapace_completer = {|spans|
+#     carapace $spans.0 nushell ...$spans | from json
+#}
+
+
+
+let external_completer = {|spans|
+	let carapace_completer = {|spans|
+		carapace $spans.0 nushell ...$spans
+		| from json
+		| if ($in | default [] | where value == $"($spans | last)ERR" | is-empty) { $in } else { null }
+	}
+	let zoxide_completer = {|spans|
+		$spans | skip 1 | zoxide query -l $in | lines | where {|x| $x != $env.PWD}
+	}
+
+  let fish_completer = {|spans|
+    fish --command $'complete "--do-complete=($spans | str join " ")"'
+    | $"value(char tab)description(char newline)" + $in
+    | from tsv --flexible --no-infer
+  }
+
+	let expanded_alias = scope aliases | where name == $spans.0 | get -i 0 | get -i expansion
+	let spans = if $expanded_alias != null  {
+		$spans | skip 1 | prepend ($expanded_alias | split row " " | take 1)
+	} else {
+		$spans
+	}
+
+	match $spans.0 {
+    git => $fish_completer
+		__zoxide_z | __zoxide_zi => $zoxide_completer,
+		_ => $carapace_completer
+	} | do $in $spans
 }
 
 # The default config record. This is where much of your global configuration is setup.
@@ -211,7 +242,7 @@ $env.config = {
         external: {
             enable: true # set to false to prevent nushell looking into $env.PATH to find more suggestions, `false` recommended for WSL users as this look up may be very slow
             max_results: 100 # setting it lower can improve completion performance at the cost of omitting some options
-            completer: $carapace_completer # check 'carapace_completer' above as an example
+            completer: $external_completer # check 'carapace_completer' above as an example
         }
     }
 
@@ -839,5 +870,6 @@ $env.config = {
         }
     ]
 }
+
 source ~/.cache/carapace/init.nu
 use ~/.cache/starship/init.nu
