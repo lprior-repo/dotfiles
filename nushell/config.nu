@@ -840,4 +840,8 @@ $env.config = {
     ]
 }
 source ~/.cache/carapace/init.nu
+source ~/.config/nushell/git-v2.nu
+source ~/.config/nushell/git-completions.nu
+source ~/.config/nushell/argx.nu
+source ~/.cache/carapace/init.nu
 use ~/.cache/starship/init.nu
