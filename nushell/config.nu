@@ -840,8 +840,15 @@ $env.config = {
     ]
 }
 source ~/.cache/carapace/init.nu
-source ~/.config/nushell/git-v2.nu
-source ~/.config/nushell/git-completions.nu
 source ~/.config/nushell/argx.nu
-source ~/.cache/carapace/init.nu
+source ~/.config/nushell/nu_scripts/custom-completions/gh/gh-completions.nu
+source ~/.config/nushell/nu_scripts/custom-completions/git/git-completions.nu
+source ~/.config/nushell/nu_scripts/custom-completions/npm/npm-completions.nu
+source ~/.config/nushell/nu_scripts/custom-completions/rg/rg-completions.nu
+source ~/.config/nushell/nu_scripts/custom-completions/yarn/yarn-v4-completions.nu
+source ~/.config/nushell/nu_scripts/custom-completions/zellij/zellij-completions.nu
+source ~/.config/nushell/nu_scripts/modules/git/git-v2.nu
+source ~/.config/nushell/nu_scripts/modules/docker/docker.nu
+
 use ~/.cache/starship/init.nu
+
