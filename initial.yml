@@ -14,25 +14,15 @@
         state: present
         update_cache: yes
 
+    - name: Check if Homebrew is already installed
+      stat:
+        path: /usr/local/bin/brew
+      register: b
+
     - name: Install Homebrew
-      shell: |
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      args:
-        creates: /home/linuxbrew/.linuxbrew/bin/brew
-
-    - name: Configure Homebrew in all user environments
-      lineinfile:
-        path: "{{ item }}"
-        line: 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"'
-        state: present
-      loop:
-        - /etc/bash.bashrc   # System-wide Bash configuration
-        - ~/.bashrc          # Current user Bash configuration
-      become: yes  # Needed for modifying /etc/bash.bashrc
-
-    - name: Ensure Homebrew shell environment is active in this session
-      shell: |
-        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+      script: install-homebrew.sh
+      when: not b.stat.exists
+    
 
     - name: Install GCC with Homebrew
       shell: |
