@@ -3,6 +3,9 @@
 - name: Setup Machine
   hosts: localhost
   become: yes
+  vars:
+    brew_env_line: 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"'
+
   tasks:
     - name: Install dependencies for Linuxbrew
       apt:
@@ -18,18 +21,79 @@
     - name: Check if Homebrew is already installed
       stat:
         path: /usr/local/bin/brew
-      register: b
+      register: brew_installed
 
     - name: Install Homebrew
       script: install-homebrew.sh
-      when: not b.stat.exists
+      when: not brew_installed.stat.exists
 
-    # Move this to role https://docs.ansible.com/ansible/latest/collections/community/general/homebrew_module.html#ansible-collections-community-general-homebrew-module-requirements
+    - name: Determine the target user
+      set_fact:
+        target_user: "{{ ansible_env.SUDO_USER | default(ansible_env.USER) }}"
+        user_home: "{{ '/home/' + ansible_env.SUDO_USER if ansible_env.SUDO_USER else ansible_env.HOME }}"
+
+    - name: Define path to .bashrc
+      set_fact:
+        bashrc_path: "{{ user_home }}/.bashrc"
+
+    - name: Ensure .bashrc exists
+      file:
+        path: "{{ bashrc_path }}"
+        state: touch
+        owner: "{{ target_user }}"
+        group: "{{ target_user }}"
+        mode: '0644'
+      when: not brew_installed.stat.exists
+
+    - name: Get .bashrc status
+      stat:
+        path: "{{ bashrc_path }}"
+      register: bashrc_stat
+      when: not brew_installed.stat.exists
+
+    - name: Add a newline to .bashrc if it's not empty
+      lineinfile:
+        path: "{{ bashrc_path }}"
+        line: ""
+        insertafter: EOF
+        state: present
+      when: bashrc_stat.stat.size > 0 and not brew_installed.stat.exists
+      become_user: "{{ target_user }}"
+      register: newline_added
+
+    - name: Append Homebrew environment setup to .bashrc
+      lineinfile:
+        path: "{{ bashrc_path }}"
+        line: "{{ brew_env_line }}"
+        state: present
+        insertafter: EOF
+      become_user: "{{ target_user }}"
+      when: not brew_installed.stat.exists
+      notify: Reload Homebrew Environment
+
+    - name: Apply Homebrew environment to the current shell session
+      shell: "{{ brew_env_line }}"
+      args:
+        executable: /bin/bash
+      when: newline_added.changed or not brew_installed.stat.exists
+
+    - name: Inform the user about completion
+      debug:
+        msg:
+          - "Homebrew installation complete."
+          - "Homebrew environment has been added to {{ bashrc_path }}."
+
+    - name: Source .bashrc
+      shell: source "{{ bashrc_path }}"
+      when: not brew_installed.stat.exists
+      become_user: "{{ target_user }}"
+
     - name: Install GCC with Homebrew
-      shell: |
-        brew install gcc
+      shell: brew install gcc
       args:
         creates: /home/linuxbrew/.linuxbrew/bin/gcc
+      become_user: "{{ target_user }}"
+      when: not brew_installed.stat.exists
 
 
 
