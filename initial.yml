@@ -1,5 +1,6 @@
 ---
-- name: Install Homebrew on Linux
+# Why is this one file vs a role? I want this to be dead simple. 
+- name: Setup Machine
   hosts: localhost
   become: yes
   tasks:
