@@ -1,9 +1,5 @@
 ---
 # Why is this one file vs a role? I want this to be dead simple. 
----
-# Playbook: Setup Machine
-# Description: Installs Homebrew and GCC on a Linux machine with enhanced verification.
-
 - name: Setup Machine
   hosts: localhost
   become: yes
