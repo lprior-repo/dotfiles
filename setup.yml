@@ -1,5 +1,9 @@
 ---
 # Why is this one file vs a role? I want this to be dead simple. 
+---
+# Playbook: Setup Machine
+# Description: Installs Homebrew and GCC on a Linux machine with enhanced verification.
+
 - name: Setup Machine
   hosts: localhost
   become: yes
@@ -18,14 +22,25 @@
         state: present
         update_cache: yes
 
-    - name: Check if Homebrew is already installed
+    - name: Check if Homebrew executable exists
       stat:
-        path: /usr/local/bin/brew
-      register: brew_installed
+        path: /home/linuxbrew/.linuxbrew/bin/brew
+      register: brew_exec_stat
 
+    - name: Check if Homebrew is functional by running 'brew --version'
+      command: /home/linuxbrew/.linuxbrew/bin/brew --version
+      register: brew_version
+      changed_when: false
+      failed_when: false
+      when: brew_exec_stat.stat.exists
+
+    - name: Determine if Homebrew is installed and functional
+      set_fact:
+        brew_installed: "{{ brew_exec_stat.stat.exists and (brew_version.rc == 0) }}"
+    
     - name: Install Homebrew
       script: install-homebrew.sh
-      when: not brew_installed.stat.exists
+      when: not brew_installed
 
     - name: Determine the target user
       set_fact:
@@ -43,13 +58,13 @@
         owner: "{{ target_user }}"
         group: "{{ target_user }}"
         mode: '0644'
-      when: not brew_installed.stat.exists
+      when: not brew_installed
 
     - name: Get .bashrc status
       stat:
         path: "{{ bashrc_path }}"
       register: bashrc_stat
-      when: not brew_installed.stat.exists
+      when: not brew_installed
 
     - name: Add a newline to .bashrc if it's not empty
       lineinfile:
@@ -57,7 +72,7 @@
         line: ""
         insertafter: EOF
         state: present
-      when: bashrc_stat.stat.size > 0 and not brew_installed.stat.exists
+      when: bashrc_stat.stat.size > 0 and not brew_installed
       become_user: "{{ target_user }}"
       register: newline_added
 
@@ -68,14 +83,14 @@
         state: present
         insertafter: EOF
       become_user: "{{ target_user }}"
-      when: not brew_installed.stat.exists
+      when: not brew_installed
       notify: Reload Homebrew Environment
 
     - name: Apply Homebrew environment to the current shell session
       shell: "{{ brew_env_line }}"
       args:
         executable: /bin/bash
-      when: newline_added.changed or not brew_installed.stat.exists
+      when: newline_added.changed or not brew_installed
 
     - name: Inform the user about completion
       debug:
@@ -85,7 +100,7 @@
 
     - name: Source .bashrc
       shell: source "{{ bashrc_path }}"
-      when: not brew_installed.stat.exists
+      when: not brew_installed
       become_user: "{{ target_user }}"
 
     - name: Install GCC with Homebrew
@@ -93,7 +108,7 @@
       args:
         creates: /home/linuxbrew/.linuxbrew/bin/gcc
       become_user: "{{ target_user }}"
-      when: not brew_installed.stat.exists
+      when: brew_installed or not brew_installed  # Adjust condition as needed
 
 
 
