@@ -4,6 +4,8 @@ Used to setup my linux machines with my ideal coding and DevOps software.
 
 Copy the script the bare-metal.sh script over to machine.  
 
+`vi bare-metal.sh`
+
 `chmod +x bare-metal.sh`
 
 `./bare-metal.sh`
