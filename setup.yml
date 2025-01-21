@@ -2,8 +2,6 @@
 - name: Setup Machine
   hosts: localhost
   become: yes
-  vars:
-    brew_env_line: 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"'
 
   tasks:
     - name: Install snap packages
