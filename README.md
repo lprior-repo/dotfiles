@@ -1,14 +1,8 @@
 ### Setup Configuration
 
-Used to setup my linux machines with my ideal coding and DevOps software.
+Used to setup my personal linux machines with my ideal coding and DevOps software.
 
-Copy the script the bare-metal.sh script over to machine.  
-
-`vi bare-metal.sh`
-
-`chmod +x bare-metal.sh`
-
-`./bare-metal.sh`
+`curl -s https://raw.githubusercontent.com/lprior-repo/dotfiles/refs/heads/main/bare-metal.sh | bash`
 
 Insert password. 
 
