@@ -28,6 +28,7 @@
           - rust
           - terraform
           - xclip
+          - wezterm
           - zellij
           - zoxide
         classic: true
