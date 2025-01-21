@@ -1,5 +1,4 @@
 ---
-# Why is this one file vs a role? I want this to be dead simple. 
 - name: Setup Machine
   hosts: localhost
   become: yes
@@ -7,104 +6,11 @@
     brew_env_line: 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"'
 
   tasks:
-    - name: Install dependencies for Linuxbrew
-      apt:
-        name:
-          - build-essential
-          - curl
-          - file
-          - git
-          - sudo
-        state: present
-        update_cache: yes
-
-    - name: Check if Homebrew executable exists
-      stat:
-        path: /home/linuxbrew/.linuxbrew/bin/brew
-      register: brew_exec_stat
-
-    - name: Check if Homebrew is functional by running 'brew --version'
-      command: /home/linuxbrew/.linuxbrew/bin/brew --version
-      register: brew_version
-      changed_when: false
-      failed_when: false
-      when: brew_exec_stat.stat.exists
-
-    - name: Determine if Homebrew is installed and functional
-      set_fact:
-        brew_installed: "{{ brew_exec_stat.stat.exists and (brew_version.rc == 0) }}"
-    
-    - name: Install Homebrew
-      script: install-homebrew.sh
-      when: not brew_installed
-
-    - name: Determine the target user
-      set_fact:
-        target_user: "{{ ansible_env.SUDO_USER | default(ansible_env.USER) }}"
-        user_home: "{{ '/home/' + ansible_env.SUDO_USER if ansible_env.SUDO_USER else ansible_env.HOME }}"
-
-    - name: Define path to .bashrc
-      set_fact:
-        bashrc_path: "{{ user_home }}/.bashrc"
-
-    - name: Ensure .bashrc exists
-      file:
-        path: "{{ bashrc_path }}"
-        state: touch
-        owner: "{{ target_user }}"
-        group: "{{ target_user }}"
-        mode: '0644'
-      when: not brew_installed
-
-    - name: Get .bashrc status
-      stat:
-        path: "{{ bashrc_path }}"
-      register: bashrc_stat
-      when: not brew_installed
-
-    - name: Add a newline to .bashrc if it's not empty
-      lineinfile:
-        path: "{{ bashrc_path }}"
-        line: ""
-        insertafter: EOF
-        state: present
-      when: bashrc_stat.stat.size > 0 and not brew_installed
-      become_user: "{{ target_user }}"
-      register: newline_added
-
-    - name: Append Homebrew environment setup to .bashrc
-      lineinfile:
-        path: "{{ bashrc_path }}"
-        line: "{{ brew_env_line }}"
-        state: present
-        insertafter: EOF
-      become_user: "{{ target_user }}"
-      when: not brew_installed
-      notify: Reload Homebrew Environment
-
-    - name: Apply Homebrew environment to the current shell session
-      shell: "{{ brew_env_line }}"
-      args:
-        executable: /bin/bash
-      when: newline_added.changed or not brew_installed
-
-    - name: Inform the user about completion
-      debug:
-        msg:
-          - "Homebrew installation complete."
-          - "Homebrew environment has been added to {{ bashrc_path }}."
-
-    - name: Source .bashrc
-      shell: source "{{ bashrc_path }}"
-      when: not brew_installed
-      become_user: "{{ target_user }}"
-
-    - name: Install GCC with Homebrew
-      shell: brew install gcc
-      args:
-        creates: /home/linuxbrew/.linuxbrew/bin/gcc
-      become_user: "{{ target_user }}"
-      when: brew_installed or not brew_installed  # Adjust condition as needed
+    - name: Install snap packages
+      community.general.snap: 
+        name: 
+          - 
+        classic: true
 
 
 
