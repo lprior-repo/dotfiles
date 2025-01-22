@@ -15,7 +15,7 @@ else
 fi
 
 echo "Installing dependencies..."
-if sudo apt install -y git python3 python3-pip ansible bat; then
+if sudo apt install -y git python3 python3-pip ansible bat gpg; then
     echo "Dependencies installed successfully."
 else
     echo "Error: Failed to install dependencies."
@@ -37,6 +37,14 @@ else
     echo "Error: Failed to refresh Snap packages."
     exit 1
 fi
+
+# Install eza since it doesn't exist for snap
+sudo mkdir -p /etc/apt/keyrings
+wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
+sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+sudo apt update
+sudo apt install -y eza
 
 # Clone or update the repository
 echo "Cloning or updating the repository..."
