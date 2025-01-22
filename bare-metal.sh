@@ -47,7 +47,7 @@ echo "Files have been successfully pulled down to $DEST_PATH!"
 # Run the Ansible playbook
 if [ -f "$ANSIBLE_PLAYBOOK" ]; then
     echo "Running the Ansible playbook..."
-    ansible-playbook "$ANSIBLE_PLAYBOOK" --ask-become-pass
+    ansible-playbook "$ANSIBLE_PLAYBOOK"
 else
     echo "Error: Ansible playbook not found at $ANSIBLE_PLAYBOOK"
     exit 1
