@@ -8,8 +8,6 @@
     - name: Install snap packages
       community.general.snap: 
         name: 
-          - yamllint
-          - ansible-language-server
           - bat
           - chezmoi
           - docker
@@ -17,6 +15,7 @@
           - fd
           - fzf
           - gh
+          - ghostty
           - go
           - kind
           - kubernetes-cli
