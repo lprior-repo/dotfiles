@@ -15,36 +15,20 @@ else
 fi
 
 echo "Installing dependencies..."
-if sudo apt install -y git python3 python3-pip ansible bat gpg; then
+if sudo apt install -y git python3 python3-pip ansible; then
     echo "Dependencies installed successfully."
 else
     echo "Error: Failed to install dependencies."
     exit 1
 fi
 
-echo "Setting up Snap..."
-if sudo apt install -y snapd; then
-    echo "Snap installed successfully."
-else
-    echo "Error: Failed to install Snap."
-    exit 1
-fi
+echo "Setup bashrc"
+    echo >> /home/lprior/.bashrc
+    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/lprior/.bashrc
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-echo "Refreshing all Snap packages..."
-if sudo snap refresh; then
-    echo "Snap packages refreshed successfully."
-else
-    echo "Error: Failed to refresh Snap packages."
-    exit 1
-fi
-
-# Install eza since it doesn't exist for snap
-sudo mkdir -p /etc/apt/keyrings
-wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
-echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
-sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
-sudo apt update
-sudo apt install -y eza
+echo "Reboot"
+systemctl reboot
 
 # Clone or update the repository
 echo "Cloning or updating the repository..."
@@ -58,18 +42,6 @@ else
 fi
 
 echo "Files have been successfully pulled down to $DEST_PATH!"
-
-# Install Ansible Galaxy collections
-echo "Installing Ansible Galaxy collections..."
-if ansible-galaxy collection install community.general; then
-    echo "Ansible Galaxy collections installed successfully."
-else
-    echo "Error: Failed to install Ansible Galaxy collections."
-    exit 1
-fi
-
-# Reboot system
-sudo systemctl reboot
 
 # Run the Ansible playbook
 if [ -f "$ANSIBLE_PLAYBOOK" ]; then
