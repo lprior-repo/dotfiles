@@ -13,6 +13,13 @@ else
     echo "Error: Failed to update system packages."
     exit 1
 fi
+echo "Install Brew"
+yes | /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+echo "Setup bashrc"
+    echo >> /home/lprior/.bashrc
+    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/lprior/.bashrc
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 echo "Installing dependencies..."
 if sudo apt install -y git python3 python3-pip ansible; then
@@ -22,13 +29,8 @@ else
     exit 1
 fi
 
-echo "Setup bashrc"
-    echo >> /home/lprior/.bashrc
-    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/lprior/.bashrc
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-
 echo "Reboot"
-systemctl reboot
+sudo reboot
 
 # Clone or update the repository
 echo "Cloning or updating the repository..."
