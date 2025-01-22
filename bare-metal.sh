@@ -31,9 +31,6 @@ echo "Setup bashrc"
     echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/lprior/.bashrc
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-echo "Reboot"
-sudo reboot
-
 # Clone or update the repository
 echo "Cloning or updating the repository..."
 mkdir -p "$(dirname "$DEST_PATH")"  # Ensure the parent directory exists
