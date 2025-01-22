@@ -1,7 +1,7 @@
 - name: Setup Machine
   hosts: localhost
   tasks:
-    - name: Install snap packages
+    - name: Install brew packages
       homebrew: 
         name: 
           - chezmoi
