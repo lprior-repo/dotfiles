@@ -3,7 +3,7 @@
   become: yes
   tasks:
     - name: Install snap packages
-      snap: 
+      homebrew: 
         name: 
           - chezmoi
           - docker
@@ -31,7 +31,9 @@
           - wezterm
           - zellij
           - zoxide
-        classic: true
+        state: latest
+        update_homebrew: true
+        upgrade_all: true
 
 
 
