@@ -16,7 +16,7 @@ fi
 
 
 echo "Installing dependencies..."
-if sudo apt install -y git python3 python3-pip ansible build-essentials gcc; then
+if sudo apt install -y git python3 python3-pip ansible build-essentials; then
     echo "Dependencies installed successfully."
 else
     echo "Error: Failed to install dependencies."
