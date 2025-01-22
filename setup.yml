@@ -1,6 +1,5 @@
 - name: Setup Machine
   hosts: localhost
-  become: yes
   tasks:
     - name: Install snap packages
       homebrew: 
