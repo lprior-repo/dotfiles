@@ -5,7 +5,6 @@
     - name: Install snap packages
       snap: 
         name: 
-          - bat
           - chezmoi
           - docker
           - eza
