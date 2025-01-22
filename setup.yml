@@ -1,8 +1,8 @@
 - name: Setup Machine
   hosts: localhost
   tasks:
-    - name: Install brew packages
-      homebrew: 
+    - name: Install Homebrew packages
+      community.general.homebrew:
         name: 
           - chezmoi
           - docker
@@ -31,8 +31,6 @@
           - zellij
           - zoxide
         state: latest
-        update_homebrew: true
-        upgrade_all: true
 
 
 
