@@ -3,7 +3,7 @@
   become: yes
   tasks:
     - name: Install snap packages
-      community.general.snap: 
+      snap: 
         name: 
           - bat
           - chezmoi
