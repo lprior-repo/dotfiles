@@ -7,7 +7,7 @@ DEST_PATH="$HOME/src/dotfiles"          # Use $HOME to ensure proper expansion
 ANSIBLE_PLAYBOOK="$DEST_PATH/setup.yml"  # Path to your Ansible playbook
 
 echo "Updating system packages..."
-if sudo snap update && sudo apt upgrade -y; then
+if sudo apt update && sudo apt upgrade -y; then
     echo "System packages updated successfully."
 else
     echo "Error: Failed to update system packages."
