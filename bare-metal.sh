@@ -13,6 +13,16 @@ else
     echo "Error: Failed to update system packages."
     exit 1
 fi
+
+
+echo "Installing dependencies..."
+if sudo apt install -y git python3 python3-pip ansible build-essentials gcc; then
+    echo "Dependencies installed successfully."
+else
+    echo "Error: Failed to install dependencies."
+    exit 1
+fi
+
 echo "Install Brew"
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
@@ -20,14 +30,6 @@ echo "Setup bashrc"
     echo >> /home/lprior/.bashrc
     echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/lprior/.bashrc
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-
-echo "Installing dependencies..."
-if sudo apt install -y git python3 python3-pip ansible; then
-    echo "Dependencies installed successfully."
-else
-    echo "Error: Failed to install dependencies."
-    exit 1
-fi
 
 echo "Reboot"
 sudo reboot
