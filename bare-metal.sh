@@ -15,7 +15,7 @@ else
 fi
 
 echo "Installing dependencies..."
-if sudo apt install -y git python3 python3-pip ansible; then
+if sudo apt install -y git python3 python3-pip ansible bat; then
     echo "Dependencies installed successfully."
 else
     echo "Error: Failed to install dependencies."
@@ -59,6 +59,9 @@ else
     echo "Error: Failed to install Ansible Galaxy collections."
     exit 1
 fi
+
+# Reboot system
+sudo systemctl reboot
 
 # Run the Ansible playbook
 if [ -f "$ANSIBLE_PLAYBOOK" ]; then
