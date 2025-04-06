@@ -1,0 +1,99 @@
+{
+  "assistant": {
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "claude-3-7-sonnet"
+    },
+    "version": "2"
+  },
+  "telemetry": {
+    "metrics": false,
+    "diagnostics": false
+  },
+  "diagnostics": {
+    "include_warnings": true,
+    "inline": {
+      "enabled": true,
+      "update_debounce_ms": 50,
+      "min_column": 80
+    }
+  },
+  "git": {
+    "enabled": false
+  },
+  "file_scan_exclusions": [
+    "**/.git",
+    "**/.svn",
+    "**/.hg",
+    "**/CVS",
+    "**/.DS_Store",
+    "**/Thumbs.db",
+    "**/.classpath",
+    "**/.settings",
+    "**/out",
+    "**/dist",
+    "**/.husky",
+    "**/.turbo",
+    "**/.vscode-test",
+    "**/.vscode",
+    "**/.next",
+    "**/.storybook",
+    "**/.tap",
+    "**/.nyc_output",
+    "**/report",
+    "**/node_modules"
+  ],
+  "inlay_hints": {
+    "enable": false
+  },
+
+  "vim_mode": true,
+  "vim": {
+    "enable_vim_sneak": true
+  },
+  "tab_bar": {
+    "show": true
+  },
+  "format_on_save": "on",
+  "formatter": {
+    "code_actions": {
+      "source.fixAll.eslint": true,
+      "source.organizeImports": true
+    }
+  },
+  "languages": {
+    "Go": {
+      "code_actions_on_format": {
+        "source.organizeimports": true
+      },
+      "Typescript": {
+        "code_actions_on_format": {
+          "source.organizeImports": true
+        },
+        "TSX": {
+          "code_actions_on_format": {
+            "source.organizeImports": true
+          }
+        }
+    }
+    }
+  },
+  "load_direnv": "direct",
+  "restore_on_startup": "none",
+  "relative_line_numbers": true,
+  "indent_guides": {
+    "enabled": true,
+    "coloring": "indent_aware"
+  },
+  "tab_size": 2,
+  "features": {
+    "edit_prediction_provider": "copilot"
+  },
+  "ui_font_size": 16,
+  "buffer_font_size": 16,
+  "theme": {
+    "mode": "system",
+    "light": "One Dark Pro Monokai Darker",
+    "dark": "One Dark Pro Monokai Darker"
+  }
+}
